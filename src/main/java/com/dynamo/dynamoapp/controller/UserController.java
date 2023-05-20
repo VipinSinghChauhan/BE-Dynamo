@@ -3,6 +3,7 @@ package com.dynamo.dynamoapp.controller;
 import com.dynamo.dynamoapp.entity.UserInfo;
 import com.dynamo.dynamoapp.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,8 +15,12 @@ public class UserController {
     @Autowired
     UserInfoRepository userRepository;
 
+    @Autowired
+    PasswordEncoder encoder;
+
     @PostMapping("/")
     public UserInfo saveUser(@RequestBody UserInfo user) {
+        user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
